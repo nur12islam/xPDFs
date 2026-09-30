@@ -214,11 +214,12 @@ function renderReport(){
   const titlePage=makePage();
   titlePage.page.classList.add("title");
   pages.push(titlePage.page);
+  const submittedBlock=submittedTo?`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:1.7;">Submitted to<br><b>${escapeHTML(submittedTo)}</b></div>`:"";
   titlePage.body.innerHTML=
     `<h1 style="font-size:${fontSize}pt;line-height:1.35;">${escapeHTML(title)}</h1>
      <div class="meta" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(assessment)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}</div>
      <div class="submitted" style="font-size:${fontSize}pt;line-height:1.7;">Submitted by<br><b>${escapeHTML(student)}</b><br>${escapeHTML(semester)}</div>
-     ${submittedTo?\`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:1.7;">Submitted to<br><b>${escapeHTML(submittedTo)}</b></div>\`:""}`;
+     ${submittedBlock}`;
 
   paginateSection("Executive Summary",summary,false,fontSize,lineSpacing,alignment,pages);
   paginateSection("Report",report,false,fontSize,lineSpacing,alignment,pages);
