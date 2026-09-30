@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XARK Report Writer</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:#090909;color:#eee;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{height:58px;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid #222;position:sticky;top:0;background:#0d0d0d;z-index:5}
+header a{color:#ddd;text-decoration:none}
+header span{margin-left:auto;color:#888;font-size:12px}
+.layout{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 58px)}
+aside{padding:18px;overflow:auto;max-height:calc(100vh - 58px);border-right:1px solid #222}
+label{display:block;color:#aaa;font-size:12px;margin:12px 0}
+input,textarea,select{width:100%;margin-top:6px;background:#141414;color:#eee;border:1px solid #333;border-radius:9px;padding:10px;font:inherit}
+textarea{resize:vertical}
+h2{font-size:14px;margin-top:20px}
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.format-grid label{margin:8px 0}
+.format-note{color:#777;font-size:11px;margin:6px 0 12px;line-height:1.5}
+button{width:100%;padding:12px;border:0;border-radius:10px;margin-top:14px;font-weight:700;cursor:pointer}
+button.secondary{background:#191919;color:#ddd;border:1px solid #333}
+#preview{padding:25px;overflow:auto}
+.preview{width:210mm;height:297mm;min-height:297mm;background:#fff;color:#111;margin:0 auto 25px;padding:22mm 22mm 20mm 25mm;position:relative;box-shadow:0 3px 18px #0003;overflow:hidden;break-after:page;page-break-after:always}
+.preview:last-child{break-after:auto;page-break-after:auto}
+.page-body{height:255mm;overflow:hidden}
+.no{position:absolute;right:18mm;top:12mm;color:#777;opacity:.72;font:normal 11pt "Times New Roman",serif;letter-spacing:.1px}
+.title{padding-top:0}
+.title .page-body{height:100%;display:flex;flex-direction:column;align-items:stretch;text-align:center;padding-top:38mm}
+.title h1{font-weight:bold;max-width:150mm;margin:0 auto 18mm}
+.meta{line-height:1.7}
+.submitted{margin-top:18mm}
+.submitted-to{margin-top:12mm}
+.meta,.submitted,.submitted-to{font-family:"Times New Roman",serif}
+.section{font-weight:bold;margin:0 0 8pt;font-family:"Times New Roman",serif}
+.p{font-family:"Times New Roman",serif;text-align:justify;margin:0;text-indent:1.27cm}
+.ref{font-family:"Times New Roman",serif;text-align:left;margin:0;text-indent:0}
+.measure{position:absolute;left:-100000px;top:0;width:210mm;height:297mm;visibility:hidden;pointer-events:none}
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  aside{max-height:none;border:0}
+  #preview{overflow:auto}
+  .preview{margin-left:0}
+}
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff}
+  header,aside{display:none!important}
+  .layout{display:block;min-height:0}
+  #preview{padding:0;overflow:visible}
+  .preview{margin:0!important;box-shadow:none!important}
+}
+</style>
+</head>
+<body>
+<header><a href="../">← XARK</a><b>Report Writer</b><span>Free • Browser-only</span></header>
+<div class="layout">
+<aside>
+<h2>Report Details</h2>
+<label>Report Title<textarea id="title" rows="5" placeholder="Enter your report title..."></textarea></label>
+<label>Assessment Type<input id="assessment" type="text" placeholder="e.g. SEC – Internal Assessment"></label>
+<label>Department<input id="department" type="text" placeholder="e.g. Department of English"></label>
+<label>University / Institution<input id="university" type="text" placeholder="Enter university name..."></label>
+<label>Student Name<input id="student" type="text" placeholder="Enter your full name..."></label>
+<label>Year / Semester<input id="semester" type="text" placeholder="e.g. UG 2nd Year – 3rd Semester"></label>
+<label>Submitted To<input id="submittedTo" type="text" placeholder="Optional — e.g. Dr. ABC"></label>
+<h2>Heading Alignment</h2><select id="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select>
+<h2>Text Formatting</h2>
+<div class="format-grid">
+<label>Font Size<select id="fontSize"><option value="10">10 pt</option><option value="11">11 pt</option><option value="12" selected>12 pt</option><option value="13">13 pt</option><option value="14">14 pt</option><option value="16">16 pt</option><option value="18">18 pt</option></select></label>
+<label>Line Spacing<select id="lineSpacing"><option value="1">1.0 — Single</option><option value="1.15">1.15</option><option value="1.5">1.5</option><option value="2" selected>2.0 — Double</option><option value="2.2">2.2 — Expanded</option><option value="2.5">2.5</option><option value="3">3.0</option></select></label>
+</div>
+<p class="format-note">Double spacing is applied explicitly (12 pt at 2.0 = 24 pt). Preview and PDF export use fixed A4 pages with automatic pagination.</p>
+<h2>Executive Summary</h2><textarea id="summary" rows="14" placeholder="Write your executive summary here...
+
+Separate paragraphs with one blank line."></textarea>
+<h2>Report</h2><textarea id="report" rows="20" placeholder="Write your report here...
+
+Separate paragraphs with one blank line."></textarea>
+<h2>References</h2><textarea id="refs" rows="12" placeholder="Enter your references here...
+
+Example:
+
+1. Author, Name. Title. Publisher, Year.
+
+2. Author, Name. Title. Publisher, Year."></textarea>
+<button type="button" onclick="window.print()">Print / Save PDF</button>
+<button type="button" class="secondary" onclick="clearAll()">Clear All</button>
+</aside>
+<main id="preview"></main>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function escapeHTML(value){
+  return String(value??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function getLastName(){
+  const fullName=$("student").value.trim();
+  if(!fullName)return "";
+  const parts=fullName.split(/\s+/);
+  return parts[parts.length-1];
+}
+function pageLabel(number){
+  const surname=getLastName();
+  return surname?(`${surname} ${number}`):String(number);
+}
+function lineHeightPt(fontSize,lineSpacing){
+  return fontSize*lineSpacing;
+}
+function paragraphsFrom(text){
+  return String(text||"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+}
+function makeParagraph(text,reference,fontSize,lineSpacing){
+  const p=document.createElement("p");
+  p.className=reference?"ref":"p";
+  p.style.fontSize=`${fontSize}pt`;
+  p.style.lineHeight=`${lineHeightPt(fontSize,lineSpacing)}pt`;
+  p.textContent=text;
+  return p;
+}
+function makePage(){
+  const page=document.createElement("section");
+  page.className="preview";
+  const no=document.createElement("div");
+  no.className="no";
+  const body=document.createElement("div");
+  body.className="page-body";
+  page.append(no,body);
+  $("preview").appendChild(page);
+  return {page,body,no};
+}
+function setHeading(body,title,alignment,fontSize){
+  const h=document.createElement("h2");
+  h.className="section";
+  h.style.textAlign=alignment;
+  h.style.fontSize=`${fontSize+2}pt`;
+  h.style.lineHeight="1.2";
+  h.textContent=title;
+  body.appendChild(h);
+}
+function fits(body,node){
+  body.appendChild(node);
+  const ok=body.scrollHeight<=body.clientHeight+0.5;
+  if(!ok)body.removeChild(node);
+  return ok;
+}
+function appendSplitParagraph(text,reference,fontSize,lineSpacing,bodyRef,pageListRef){
+  let remaining=String(text||"").trim();
+  while(remaining){
+    const words=remaining.split(/\s+/);
+    const probe=makeParagraph("",reference,fontSize,lineSpacing);
+    bodyRef.current.appendChild(probe);
+    let low=1,high=words.length,best=0;
+    while(low<=high){
+      const mid=Math.floor((low+high)/2);
+      probe.textContent=words.slice(0,mid).join(" ");
+      if(bodyRef.current.scrollHeight<=bodyRef.current.clientHeight+0.5){
+        best=mid; low=mid+1;
+      }else{
+        high=mid-1;
+      }
+    }
+    if(best===0){
+      probe.textContent=words[0];
+      remaining=words.slice(1).join(" ");
+    }else{
+      probe.textContent=words.slice(0,best).join(" ");
+      remaining=words.slice(best).join(" ");
+    }
+    if(remaining){
+      const next=makePage();
+      bodyRef.current=next.body;
+      pageListRef.push(next.page);
+    }
+  }
+}
+function paginateSection(title,text,reference,fontSize,lineSpacing,alignment,pageList){
+  if(!String(text||"").trim())return;
+  let current=makePage();
+  pageList.push(current.page);
+  setHeading(current.body,title,alignment,fontSize);
+  const bodyRef={current:current.body};
+  for(const para of paragraphsFrom(text)){
+    const node=makeParagraph(para,reference,fontSize,lineSpacing);
+    if(fits(bodyRef.current,node))continue;
+    const fresh=makePage();
+    bodyRef.current=fresh.body;
+    pageList.push(fresh.page);
+    if(!fits(bodyRef.current,node)){
+      bodyRef.current.removeChild(node);
+      appendSplitParagraph(para,reference,fontSize,lineSpacing,bodyRef,pageList);
+    }
+  }
+}
+function renderReport(){
+  const title=$("title").value;
+  const assessment=$("assessment").value;
+  const department=$("department").value;
+  const university=$("university").value;
+  const student=$("student").value;
+  const semester=$("semester").value;
+  const submittedTo=$("submittedTo").value.trim();
+  const alignment=$("align").value;
+  const fontSize=parseFloat($("fontSize").value);
+  const lineSpacing=parseFloat($("lineSpacing").value);
+  const summary=$("summary").value;
+  const report=$("report").value;
+  const references=$("refs").value;
+  $("preview").innerHTML="";
+  const pages=[];
+
+  const titlePage=makePage();
+  titlePage.page.classList.add("title");
+  pages.push(titlePage.page);
+  titlePage.body.innerHTML=
+    `<h1 style="font-size:${fontSize}pt;line-height:1.35;">${escapeHTML(title)}</h1>
+     <div class="meta" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(assessment)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}</div>
+     <div class="submitted" style="font-size:${fontSize}pt;line-height:1.7;">Submitted by<br><b>${escapeHTML(student)}</b><br>${escapeHTML(semester)}</div>
+     ${submittedTo?\`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:1.7;">Submitted to<br><b>${escapeHTML(submittedTo)}</b></div>\`:""}`;
+
+  paginateSection("Executive Summary",summary,false,fontSize,lineSpacing,alignment,pages);
+  paginateSection("Report",report,false,fontSize,lineSpacing,alignment,pages);
+  paginateSection("References",references,true,fontSize,lineSpacing,alignment,pages);
+
+  pages.forEach((page,index)=>page.querySelector(".no").textContent=pageLabel(index+1));
+}
+function clearAll(){
+  ["title","assessment","department","university","student","semester","submittedTo","summary","report","refs"].forEach(id=>$(id).value="");
+  $("align").value="left";
+  $("fontSize").value="12";
+  $("lineSpacing").value="2";
+  renderReport();
+}
+["title","assessment","department","university","student","semester","submittedTo","align","fontSize","lineSpacing","summary","report","refs"].forEach(id=>{
+  $(id).addEventListener("input",renderReport);
+  $(id).addEventListener("change",renderReport);
+});
+renderReport();
+if(document.fonts?.ready)document.fonts.ready.then(renderReport);
+</script>
+</body>
+</html>
