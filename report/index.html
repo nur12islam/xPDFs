@@ -224,7 +224,17 @@ function renderReport(){
   paginateSection("Report",report,false,fontSize,lineSpacing,alignment,pages);
   paginateSection("References",references,true,fontSize,lineSpacing,alignment,pages);
 
-  pages.forEach((page,index)=>page.querySelector(".no").textContent=pageLabel(index+1));
+  // The title page is intentionally unnumbered. Page numbering starts with Executive Summary as page 1.
+  pages.forEach((page,index)=>{
+    const number=page.querySelector(".no");
+    if(index===0){
+      number.textContent="";
+      number.style.display="none";
+    }else{
+      number.style.display="";
+      number.textContent=pageLabel(index);
+    }
+  });
 }
 function clearAll(){
   ["title","assessment","department","university","student","semester","submittedTo","summary","report","refs"].forEach(id=>$(id).value="");
