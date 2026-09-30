@@ -4,7 +4,7 @@ Static browser-based services for the XARK website.
 
 ## Current services
 
-- `/rr/` — Report Writer
+- `/report/` — Report
 - `/com/` — HTML PDF Compiler
 - `/humanizer/` — AI Humanizer powered by the Clever AI embedded widget
 
