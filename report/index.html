@@ -60,12 +60,12 @@ button.secondary{background:#191919;color:#ddd;border:1px solid #333}
 <aside>
 <h2>Report Details</h2>
 <label>Report Title<textarea id="title" rows="5" placeholder="Enter your report title..."></textarea></label>
-<label>Assessment Type<input id="assessment" type="text" placeholder="e.g. SEC – Internal Assessment"></label>
 <label>Department<input id="department" type="text" placeholder="e.g. Department of English"></label>
 <label>University / Institution<input id="university" type="text" placeholder="Enter university name..."></label>
 <label>Student Name<input id="student" type="text" placeholder="Enter your full name..."></label>
-<label>Year / Semester<input id="semester" type="text" placeholder="e.g. UG 2nd Year – 3rd Semester"></label>
-<label>Submitted To<input id="submittedTo" type="text" placeholder="Optional — e.g. Dr. ABC"></label>
+<label>Course / Paper<input id="course" type="text" placeholder="e.g. Business Communication (ENGUGSEC2303)"></label>
+<label>Submitted To<input id="submittedTo" type="text" placeholder="Optional — e.g. Dr. Sreyoshi Dhar"></label>
+<label>Date<input id="date" type="text" placeholder="e.g. 11th September, 2026"></label>
 <h2>Heading Alignment</h2><select id="align"><option value="left">Left</option><option value="center">Center</option><option value="right">Right</option></select>
 <h2>Text Formatting</h2>
 <div class="format-grid">
@@ -196,12 +196,12 @@ function paginateSection(title,text,reference,fontSize,lineSpacing,alignment,pag
 }
 function renderReport(){
   const title=$("title").value;
-  const assessment=$("assessment").value;
   const department=$("department").value;
   const university=$("university").value;
   const student=$("student").value;
-  const semester=$("semester").value;
+  const course=$("course").value;
   const submittedTo=$("submittedTo").value.trim();
+  const date=$("date").value;
   const alignment=$("align").value;
   const fontSize=parseFloat($("fontSize").value);
   const lineSpacing=parseFloat($("lineSpacing").value);
@@ -214,37 +214,32 @@ function renderReport(){
   const titlePage=makePage();
   titlePage.page.classList.add("title");
   pages.push(titlePage.page);
-  const submittedBlock=submittedTo?`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:1.7;">Submitted to<br><b>${escapeHTML(submittedTo)}</b></div>`:"";
+  const submittedBlock=submittedTo?`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:1.7;"><b>${escapeHTML(submittedTo)}</b></div>`:"";
   titlePage.body.innerHTML=
     `<h1 style="font-size:${fontSize}pt;line-height:1.35;">${escapeHTML(title)}</h1>
-     <div class="meta" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(assessment)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}</div>
-     <div class="submitted" style="font-size:${fontSize}pt;line-height:1.7;">Submitted by<br><b>${escapeHTML(student)}</b><br>${escapeHTML(semester)}</div>
-     ${submittedBlock}`;
+     <div class="meta" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(student)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}<br>${escapeHTML(course)}</div>
+     ${submittedBlock}
+     <div class="date" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(date)}</div>`;
 
   paginateSection("Executive Summary",summary,false,fontSize,lineSpacing,alignment,pages);
   paginateSection("Report",report,false,fontSize,lineSpacing,alignment,pages);
   paginateSection("References",references,true,fontSize,lineSpacing,alignment,pages);
 
-  // The title page is intentionally unnumbered. Page numbering starts with Executive Summary as page 1.
+  // The sample numbers every page, including the title page.
   pages.forEach((page,index)=>{
     const number=page.querySelector(".no");
-    if(index===0){
-      number.textContent="";
-      number.style.display="none";
-    }else{
-      number.style.display="";
-      number.textContent=pageLabel(index);
-    }
+    number.style.display="";
+    number.textContent=pageLabel(index+1);
   });
 }
 function clearAll(){
-  ["title","assessment","department","university","student","semester","submittedTo","summary","report","refs"].forEach(id=>$(id).value="");
+  ["title","department","university","student","course","submittedTo","date","summary","report","refs"].forEach(id=>$(id).value="");
   $("align").value="left";
   $("fontSize").value="12";
   $("lineSpacing").value="2";
   renderReport();
 }
-["title","assessment","department","university","student","semester","submittedTo","align","fontSize","lineSpacing","summary","report","refs"].forEach(id=>{
+["title","department","university","student","course","submittedTo","date","align","fontSize","lineSpacing","summary","report","refs"].forEach(id=>{
   $(id).addEventListener("input",renderReport);
   $(id).addEventListener("change",renderReport);
 });
