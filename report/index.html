@@ -25,15 +25,15 @@ button.secondary{background:#191919;color:#ddd;border:1px solid #333}
 #preview{padding:25px;overflow:auto}
 .preview{width:210mm;height:297mm;min-height:297mm;background:#fff;color:#000;margin:0 auto 25px;padding:25.4mm;position:relative;box-shadow:0 3px 18px #0003;overflow:hidden;break-after:page;page-break-after:always}
 .preview:last-child{break-after:auto;page-break-after:auto}
-.page-body{height:255mm;overflow:hidden}
+.page-body{height:246.2mm;overflow:hidden}
 .no{position:absolute;right:18mm;top:12mm;color:#000;opacity:.72;font:normal 11pt "Times New Roman",serif;letter-spacing:.1px}
 .title{padding-top:0}
-.title .page-body{height:100%;display:flex;flex-direction:column;align-items:stretch;text-align:center;padding-top:28mm;padding-bottom:14mm}
-.title h1{font-weight:bold;color:#000;font-family:"Times New Roman",serif;max-width:150mm;margin:0 auto 18mm}
-.meta{line-height:2;color:#000}
-.submitted{margin-top:18mm;line-height:2;color:#000}
-.submitted-to{margin-top:12mm;line-height:2;color:#000}
-.meta,.submitted,.submitted-to,.date{font-family:"Times New Roman",serif;color:#000;line-height:2}
+.title .page-body{height:246.2mm;display:flex;flex-direction:column;align-items:stretch;text-align:center;padding-top:35mm;padding-bottom:12mm}
+.title h1{font-weight:bold;color:#000 !important;-webkit-text-fill-color:#000;font-family:"Times New Roman",serif;max-width:150mm;margin:0 auto 18mm}
+.meta{line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1}
+.submitted{margin-top:18mm;line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1}
+.submitted-to{margin-top:12mm;line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1}
+.meta,.submitted,.submitted-to,.date{font-family:"Times New Roman",serif;color:#000 !important;-webkit-text-fill-color:#000;opacity:1;line-height:2}
 .section{font-weight:bold;color:#000;margin:0 0 8pt;font-family:"Times New Roman",serif}
 .p{font-family:"Times New Roman",serif;color:#000;text-align:justify;margin:0;text-indent:1.27cm}
 .ref{font-family:"Times New Roman",serif;color:#000;text-align:left;margin:0;text-indent:0}
@@ -215,12 +215,12 @@ function renderReport(){
   const titlePage=makePage();
   titlePage.page.classList.add("title");
   pages.push(titlePage.page);
-  const submittedBlock=submittedTo?`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:2;color:#000;"><b>${escapeHTML(submittedTo)}</b></div>`:"";
+  const submittedBlock=submittedTo?`<div class="submitted-to" style="font-size:${fontSize}pt;line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1;"><b>${escapeHTML(submittedTo)}</b></div>`:"";
   titlePage.body.innerHTML=
     `<h1 style="font-size:${fontSize}pt;line-height:2;color:#000;">${escapeHTML(title)}</h1>
-     <div class="meta" style="font-size:${fontSize}pt;line-height:2;color:#000;">${escapeHTML(student)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}<br>${escapeHTML(course)}</div>
+     <div class="meta" style="font-size:${fontSize}pt;line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1;">${escapeHTML(student)}<br>${escapeHTML(department)}<br>${escapeHTML(university)}<br>${escapeHTML(course)}</div>
      ${submittedBlock}
-     <div class="date" style="font-size:${fontSize}pt;line-height:1.7;">${escapeHTML(date)}</div>`;
+     <div class="date" style="font-size:${fontSize}pt;line-height:2;color:#000 !important;-webkit-text-fill-color:#000;opacity:1;margin-top:auto;">${escapeHTML(date)}</div>`;
 
   paginateSection("Executive Summary",summary,false,fontSize,lineSpacing,alignment,pages);
   paginateSection("Report",report,false,fontSize,lineSpacing,alignment,pages);
