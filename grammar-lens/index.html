@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Grammar Lens • XARK Web Services</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<main class="shell">
+  <header>
+    <div class="eyebrow">XARK • WEB SERVICES</div>
+    <h1>Grammar <span>Lens</span></h1>
+    <p>Detect, understand and fix grammar mistakes with two focused engines.</p>
+  </header>
+
+  <section class="panel">
+    <div class="toolbar">
+      <div>
+        <strong>Choose an engine</strong>
+        <small>Gramformer for focused correction · AI for contextual analysis</small>
+      </div>
+      <div class="engines">
+        <button class="engine active" data-engine="gramformer">Gramformer</button>
+        <button class="engine" data-engine="ai">AI</button>
+      </div>
+    </div>
+
+    <textarea id="input" placeholder="Paste or type your text here..."></textarea>
+
+    <div class="actions">
+      <span id="status">Ready.</span>
+      <button id="analyze">Analyze text</button>
+      <button id="clear" class="ghost">Clear</button>
+    </div>
+  </section>
+
+  <section id="results" class="panel results hidden">
+    <div class="result-head"><h2>Analysis</h2><span id="count"></span></div>
+    <div id="mistakes"></div>
+  </section>
+
+  <footer>Grammar Lens is part of XARK Web Services.</footer>
+</main>
+<script src="./app.js"></script>
+</body>
+</html>
