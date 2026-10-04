@@ -244,3 +244,62 @@ $("margin").addEventListener("change", render);
 $("pageSize").addEventListener("change", render);
 
 render();
+
+
+function isHTMLFile(file){
+  const name = file.name.toLowerCase();
+  return name.endsWith(".html") || name.endsWith(".htm") || file.type === "text/html";
+}
+
+async function loadHTMLFile(file){
+  if(!isHTMLFile(file)){
+    setStatus("Ignored: only HTML files (.html / .htm) are accepted.");
+    return;
+  }
+
+  try{
+    const html = await file.text();
+    input.value = html;
+    setStatus(`Loaded ${file.name}.`);
+    render();
+  }catch(error){
+    console.error(error);
+    setStatus("Could not read the HTML file.");
+  }
+}
+
+const fileInput = $("htmlFile");
+const dropZone = $("htmlDropZone");
+
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files?.[0];
+  if(file) loadHTMLFile(file);
+});
+
+["dragenter","dragover"].forEach(eventName => {
+  dropZone.addEventListener(eventName, event => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropZone.classList.add("dragover");
+  });
+});
+
+["dragleave","drop"].forEach(eventName => {
+  dropZone.addEventListener(eventName, event => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropZone.classList.remove("dragover");
+  });
+});
+
+dropZone.addEventListener("drop", event => {
+  const file = event.dataTransfer?.files?.[0];
+  if(file) loadHTMLFile(file);
+});
+
+dropZone.addEventListener("keydown", event => {
+  if(event.key === "Enter" || event.key === " "){
+    event.preventDefault();
+    fileInput.click();
+  }
+});
