@@ -250,6 +250,77 @@ button.secondary{
   padding-top:80mm;
 }
 
+
+.upload-zone-wrap{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin:0 0 16px;
+}
+
+.input-div{
+  position:relative;
+  flex:0 0 86px;
+  width:86px;
+  height:86px;
+  border-radius:50%;
+  border:2px solid rgb(1,235,252);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  box-shadow:0 0 45px rgba(1,235,252,.45), inset 0 0 10px rgba(1,235,252,.55), 0 0 5px #fff;
+  animation:flicker 2s linear infinite;
+  cursor:pointer;
+  outline:none;
+  transition:transform .2s ease, border-color .2s ease;
+}
+
+.input-div:hover,
+.input-div.dragover{
+  transform:scale(1.06);
+  border-color:#fff;
+}
+
+.upload-icon{
+  color:rgb(1,235,252);
+  font-size:2rem;
+  animation:iconflicker 2s linear infinite;
+  pointer-events:none;
+}
+
+.input-div .input{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  width:100%;
+  height:100%;
+  cursor:pointer;
+  z-index:2;
+}
+
+.upload-copy{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+
+.upload-copy b{color:#f5f5f5;font-size:13px}
+.upload-copy span{color:#aaa;font-size:11px;line-height:1.45}
+.upload-copy small{color:#666;font-size:10px}
+
+@keyframes flicker{
+  0%,100%{border:2px solid rgb(1,235,252);box-shadow:0 0 45px rgba(1,235,252,.45),inset 0 0 10px rgba(1,235,252,.55),0 0 5px #fff}
+  5%,25%{border:2px solid transparent;box-shadow:none}
+  10%,30%{border:2px solid rgb(1,235,252);box-shadow:0 0 45px rgba(1,235,252,.45),inset 0 0 10px rgba(1,235,252,.55),0 0 5px #fff}
+}
+
+@keyframes iconflicker{
+  0%,100%{opacity:1}
+  5%,25%{opacity:.2}
+  10%,30%{opacity:1}
+}
+
 @media(max-width:900px){
   .app{
     grid-template-columns:1fr;
