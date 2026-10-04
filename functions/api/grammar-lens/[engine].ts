@@ -1,4 +1,8 @@
-interface Env { GEMINI_API_KEY: string }
+interface Env {
+  GEMINI_API_KEY: string;
+  GRAMFORMER_API_URL?: string;
+  GRAMFORMER_SERVICE_TOKEN?: string;
+}
 
 const MODEL = "gemini-3.8-flash";
 
@@ -12,6 +16,37 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     const body = await context.request.json() as { text?: string };
     const text = body.text?.trim();
     if (!text) return Response.json({ error: "No text provided." }, { status: 400 });
+    if (engine === "gramformer") {
+      const baseUrl = context.env.GRAMFORMER_API_URL?.trim().replace(/\\/$/, "");
+      if (!baseUrl) {
+        return Response.json(
+          { error: "GRAMFORMER_API_URL is not configured yet." },
+          { status: 503 }
+        );
+      }
+
+      const gramformerResponse = await fetch(baseUrl + "/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(context.env.GRAMFORMER_SERVICE_TOKEN
+            ? { Authorization: "Bearer " + context.env.GRAMFORMER_SERVICE_TOKEN }
+            : {})
+        },
+        body: JSON.stringify({ text, max_candidates: 1 })
+      });
+
+      const result = await gramformerResponse.json().catch(() => ({}));
+      if (!gramformerResponse.ok) {
+        return Response.json(
+          { error: result?.detail || result?.error || "Gramformer service failed." },
+          { status: gramformerResponse.status }
+        );
+      }
+
+      return Response.json(result);
+    }
+
     if (!context.env.GEMINI_API_KEY) {
       return Response.json({ error: "GEMINI_API_KEY is not configured yet." }, { status: 503 });
     }
