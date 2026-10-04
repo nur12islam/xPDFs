@@ -1,46 +1,89 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Grammar Lens • XARK Web Services</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GrammarLens • XARK Web Services</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-<main class="shell">
-  <header>
-    <div class="eyebrow">XARK • WEB SERVICES</div>
-    <h1>Grammar <span>Lens</span></h1>
-    <p>Detect, understand and fix grammar mistakes with two focused engines.</p>
-  </header>
-
-  <section class="panel">
-    <div class="toolbar">
-      <div>
-        <strong>Choose an engine</strong>
-        <small>Gramformer for focused correction · AI for contextual analysis</small>
-      </div>
-      <div class="engines">
-        <button class="engine active" data-engine="gramformer">Gramformer</button>
-        <button class="engine" data-engine="ai">AI</button>
-      </div>
+<div class="app"><div class="ambient ambient-a"></div><div class="ambient ambient-b"></div>
+<section id="welcome" class="screen">
+  <div class="welcome-wrap">
+    <div class="brand-mark"><span>G</span></div>
+    <h1>GrammarLens</h1>
+    <p class="lead">Detect, understand, and fix your grammar mistakes with precision.<br>Choose your engine to get started.</p>
+    <div id="engineChoices" class="engine-grid">
+      <button class="engine-card" data-engine="ai">
+        <div class="icon-box">✦</div><h2>Continue With AI</h2>
+        <p>Advanced context-aware grammar detection with detailed explanations. No automatic rewrites.</p>
+      </button>
+      <button class="engine-card" data-engine="gramformer">
+        <div class="icon-box violet">✓</div><h2>Gramformer-Based Engine</h2>
+        <p>Quickly cross-check for mistakes using a fast, strict correction engine based on Gramformer principles.</p>
+      </button>
     </div>
-
-    <textarea id="input" placeholder="Paste or type your text here..."></textarea>
-
-    <div class="actions">
-      <span id="status">Ready.</span>
-      <button id="analyze">Analyze text</button>
-      <button id="clear" class="ghost">Clear</button>
+    <div id="consent" class="consent hidden">
+      <div class="consent-icon">⚿</div><h2>Privacy Notice</h2>
+      <p>Text will be processed by the selected AI service (Google Gemini) to detect grammar mistakes. Your text will be sent to external servers for this analysis.</p>
+      <div class="consent-actions"><button id="consentBack" class="secondary">Back</button><button id="consentYes" class="primary">I Consent</button></div>
     </div>
-  </section>
+    <div class="welcome-links"><button id="restoreBtn">↥ Restore Previous Session</button><button id="historyBtn">◷ Session History</button><input id="restoreFile" type="file" accept=".json" hidden></div>
+  </div>
+</section>
 
-  <section id="results" class="panel results hidden">
-    <div class="result-head"><h2>Analysis</h2><span id="count"></span></div>
-    <div id="mistakes"></div>
-  </section>
+<section id="workspace" class="screen hidden">
+  <nav class="topbar">
+    <div class="nav-inner">
+      <div class="nav-brand"><div class="mini-mark">G</div><span>GrammarLens</span></div>
+      <div class="nav-actions"><span id="enginePill" class="engine-pill"><i></i><b>Gramformer Engine</b></span><button id="navHistory" class="nav-btn">◷ <span>History</span></button><button id="exportBtn" class="nav-btn hidden">↓ <span>Export</span></button><button id="exitBtn" class="nav-btn exit">↪ <span>Exit</span></button></div>
+    </div>
+  </nav>
+  <main class="main">
+    <section id="inputModule" class="input-card glass">
+      <div class="input-tabs" role="tablist">
+        <button class="input-tab active" data-type="text">T <span>Text</span></button>
+        <button class="input-tab" data-type="image">▧ <span>Image</span></button>
+        <button class="input-tab" data-type="document">▤ <span>Document</span></button>
+      </div>
+      <div class="input-stage">
+        <textarea id="editor" spellcheck="true" placeholder="Paste or type your text here..."></textarea>
+        <div id="fileDrop" class="file-drop hidden"><div class="drop-icon">↑</div><h3>Drop a file here</h3><p>Upload an image or text document to continue.</p><input id="fileInput" type="file" hidden></div>
+      </div>
+      <div class="input-footer"><span id="inputMeta">0 words · 0 characters</span><button id="analyzeBtn" class="primary">Analyze Grammar <span>→</span></button></div>
+      <div id="loading" class="loading hidden"><div class="spinner"></div><h3 id="loadingTitle">Analyzing…</h3><p id="loadingText">Initializing analysis</p></div>
+    </section>
 
-  <footer>Grammar Lens is part of XARK Web Services.</footer>
-</main>
+    <section id="review" class="review-layout hidden">
+      <div class="review-main glass">
+        <div class="fix-toolbar">
+          <div class="toolbar-left"><div class="view-switch"><button class="view-btn active" data-view="highlights">◉ Highlights</button><button class="view-btn" data-view="edit">✎ Edit Text</button></div><div class="history-actions"><button id="undoBtn" title="Undo">↶</button><button id="redoBtn" title="Redo">↷</button></div></div>
+          <div class="toolbar-right"><button id="applyAllBtn" class="success">✓ <span>Apply All</span></button><button id="ignoreAllBtn" class="subtle">× <span>Ignore All</span></button><button id="resetBtn" class="danger">⌫ <span>Reset</span></button></div>
+        </div>
+        <div id="highlightEditor" class="highlight-editor"></div>
+        <textarea id="editEditor" class="edit-editor hidden"></textarea>
+      </div>
+      <aside class="review-side">
+        <div class="side-panel glass">
+          <div class="side-head"><div><h3>Review</h3><span id="issueCount">0 issues</span></div><button id="searchToggle">⌕</button></div>
+          <input id="search" class="search hidden" placeholder="Search issues…">
+          <div id="issueList" class="issue-list"></div>
+        </div>
+        <div id="explanation" class="side-panel glass explanation"></div>
+      </aside>
+    </section>
+  </main>
+</section>
+
+<div id="exportModal" class="modal hidden"><div class="modal-backdrop"></div><div class="modal-card">
+  <div class="modal-head"><h2>Export & Share</h2><button id="closeExport">×</button></div>
+  <div class="modal-body"><label>Content to Export</label><div class="choice-grid" id="exportTypes"><button data-type="original">Original Text</button><button data-type="corrected" class="selected">Corrected Text</button><button data-type="report">Grammar Report</button><button data-type="session">Full Session</button></div><label>Format</label><div class="format-row" id="formats"><button data-format="txt" class="selected">TXT</button><button data-format="md">Markdown</button><button data-format="html">HTML</button><button data-format="json" class="json-format">JSON</button></div><div class="filename"><span>Filename:</span><b id="filename">GrammarLens_Corrected.txt</b></div></div>
+  <div class="modal-foot"><button id="printExport" class="subtle">▣ Print</button><button id="copyExport" class="subtle">▢ Copy</button><button id="downloadExport" class="primary">↓ Download</button></div>
+</div></div>
+<div id="toast"></div>
 <script src="./app.js"></script>
 </body>
 </html>
