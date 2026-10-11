@@ -1,19 +1,37 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>XARK Web Services</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XARK Web Services</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/xark.css">
 <style>
-body{margin:0;background:#080808;color:#f5f5f5;font-family:Inter,system-ui,sans-serif;min-height:100vh;display:grid;place-items:center}
-main{width:min(900px,calc(100% - 32px));padding:32px}h1{font-size:clamp(34px,7vw,64px);margin:0 0 10px}p{color:#aaa}
-.card{display:block;margin-top:28px;padding:24px;border:1px solid #292929;border-radius:22px;background:#111;text-decoration:none;color:inherit}.tag{font-size:12px;color:#888}.card h2{margin:8px 0}.card:hover{border-color:#666}
-</style>
-</head>
-<body><main>
-<div class="tag">XARK • WEB SERVICES</div><h1>Simple tools, in one place.</h1><p>Free browser-based utilities.</p>
-<a class="card" href="./report/"><div class="tag">AVAILABLE NOW</div><h2>Report Writer</h2><p>Build and format academic reports with a live A4 preview.</p></a>
-<a class="card" href="./com/"><div class="tag">AVAILABLE NOW</div><h2>HTML Pdf compiler</h2><p>Build and format pdfs with a live A4 preview.</p></a>
-<a class="card" href="./humanizer/"><div class="tag">AVAILABLE NOW</div><h2>AI Humanizer</h2><p>Make AI-generated writing sound more natural with Clever AI.</p></a>
-<a class="card" href="./dictator/"><div class="tag">AVAILABLE NOW</div><h2>AI Detector</h2><p>Analyze writing with Clever AI.</p></a>
-<a class="card" href="./grammar-lens/"><div class="tag">NEW • GRAMMAR</div><h2>Grammar Lens</h2><p>Check writing with focused Gramformer and AI engines.</p></a>
+main{width:min(1120px,calc(100% - 32px));margin:0 auto;padding:56px 0 40px}
+.eyebrow{font:500 12px var(--m);letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+h1{font-size:clamp(42px,8.5vw,96px);line-height:.95;letter-spacing:-.045em;font-weight:800;margin:16px 0 18px;max-width:11ch}
+h1 mark{background:var(--lime);padding:0 .12em;border-radius:.12em;box-decoration-break:clone}
+.sub{max-width:520px;color:var(--mut);font-size:17px;margin:0 0 44px}
+.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.card{grid-column:span 2;display:flex;flex-direction:column;min-height:240px;padding:22px;border:1.5px solid var(--ink);border-radius:20px;background:var(--card);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translate(-4px,-4px);box-shadow:6px 6px 0 var(--ink)}
+.card.w{grid-column:span 3}.card.blue{background:var(--blue);color:#fff}.card.lime{background:var(--lime)}.card.dark{background:var(--ink);color:#fff}
+.top{display:flex;justify-content:space-between;font:500 12px var(--m)}
+.badge{padding:2px 9px;border-radius:99px;background:var(--lime);color:var(--ink);border:1.5px solid var(--ink)}
+.card h2{font-size:clamp(26px,3.2vw,38px);letter-spacing:-.03em;line-height:1;margin:auto 0 10px}
+.card p{margin:0;max-width:34ch;opacity:.8}
+.go{margin-top:18px;font:500 13px var(--m)}.card:hover .go{text-decoration:underline}
+footer{margin-top:36px;font:400 12px var(--m);color:var(--mut)}
+@media(max-width:820px){.grid{grid-template-columns:1fr}.card,.card.w{grid-column:auto;min-height:190px}}
+</style></head>
+<body>
+<header><a class="brand" href="./"><i>x</i>XARK</a><span>5 tools</span></header>
+<main>
+<div class="eyebrow">Web services / free / no sign-up</div>
+<h1>Small tools for <mark>serious</mark> paperwork.</h1>
+<p class="sub">Write reports, compile PDFs, polish your writing. The report and PDF tools run entirely in your browser.</p>
+<div class="grid">
+<a class="card w blue" href="./report/"><div class="top"><span>01</span><span>WRITE</span></div><h2>Report Writer</h2><p>Academic reports on live A4 pages, auto-paginated and ready to print.</p><div class="go">Open tool →</div></a>
+<a class="card w lime" href="./com/"><div class="top"><span>02</span><span>EXPORT</span></div><h2>HTML → PDF</h2><p>Paste or drop HTML, preview it on paper, download a clean PDF.</p><div class="go">Open tool →</div></a>
+<a class="card" href="./humanizer/"><div class="top"><span>03</span><span>REWRITE</span></div><h2>AI Humanizer</h2><p>Make AI-written text read naturally.</p><div class="go">Open tool →</div></a>
+<a class="card" href="./dictator/"><div class="top"><span>04</span><span>CHECK</span></div><h2>AI Detector</h2><p>See how machine-written a draft sounds.</p><div class="go">Open tool →</div></a>
+<a class="card dark" href="./grammar-lens/"><div class="top"><span>05</span><span class="badge">NEW</span></div><h2>Grammar Lens</h2><p>Find and fix mistakes with Gramformer or AI.</p><div class="go">Open tool →</div></a>
+</div>
+<footer>AI tools send your text to their providers for analysis.</footer>
 </main></body></html>
