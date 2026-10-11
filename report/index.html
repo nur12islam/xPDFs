@@ -4,25 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>XARK Report</title>
-<style>
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:#090909;color:#eee;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{height:58px;display:flex;align-items:center;gap:20px;padding:0 18px;border-bottom:1px solid #222;position:sticky;top:0;background:#0d0d0d;z-index:5}
-header a{color:#ddd;text-decoration:none}
-header span{margin-left:auto;color:#888;font-size:12px}
-.layout{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 58px)}
-aside{padding:18px;overflow:auto;max-height:calc(100vh - 58px);border-right:1px solid #222}
-label{display:block;color:#aaa;font-size:12px;margin:12px 0}
-input,textarea,select{width:100%;margin-top:6px;background:#141414;color:#eee;border:1px solid #333;border-radius:9px;padding:10px;font:inherit}
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"><link rel="stylesheet" href="../assets/xark.css"><style>
+.layout{display:grid;grid-template-columns:390px 1fr;min-height:calc(100vh - 56px)}
+aside{padding:4px 20px 28px;overflow:auto;max-height:calc(100vh - 56px);border-right:1.5px solid var(--ink);background:var(--card)}
+aside h2{font:500 11px var(--m);text-transform:uppercase;letter-spacing:.1em;margin:26px 0 0;padding-top:14px;border-top:1.5px solid var(--ink)}
+aside h2:first-child{border:0;margin-top:20px}
 textarea{resize:vertical}
-h2{font-size:14px;margin-top:20px}
-.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.format-grid label{margin:8px 0}
-.format-note{color:#777;font-size:11px;margin:6px 0 12px;line-height:1.5}
-button{width:100%;padding:12px;border:0;border-radius:10px;margin-top:14px;font-weight:700;cursor:pointer}
-button.secondary{background:#191919;color:#ddd;border:1px solid #333}
-#preview{padding:25px;overflow:auto}
+.format-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.format-grid label{margin:10px 0}
+.format-note{color:var(--mut);font-size:12px;margin:4px 0 8px}
+aside>button{width:100%;margin-top:12px}
+#preview{padding:28px;overflow:auto;background:var(--desk)}
 .preview{width:210mm;height:297mm;min-height:297mm;background:#fff;color:#000;margin:0 auto 25px;padding:25.4mm;position:relative;box-shadow:0 3px 18px #0003;overflow:hidden;break-after:page;page-break-after:always}
 .preview:last-child{break-after:auto;page-break-after:auto}
 .page-body{height:246.2mm;overflow:hidden}
@@ -38,24 +29,12 @@ button.secondary{background:#191919;color:#ddd;border:1px solid #333}
 .p{font-family:"Times New Roman",serif;color:#000;text-align:justify;margin:0;text-indent:1.27cm}
 .ref{font-family:"Times New Roman",serif;color:#000;text-align:left;margin:0;text-indent:0}
 .measure{position:absolute;left:-100000px;top:0;width:210mm;height:297mm;visibility:hidden;pointer-events:none}
-@media(max-width:850px){
-  .layout{grid-template-columns:1fr}
-  aside{max-height:none;border:0}
-  #preview{overflow:auto}
-  .preview{margin-left:0}
-}
-@media print{
-  @page{size:A4 portrait;margin:0}
-  body{background:#fff}
-  header,aside{display:none!important}
-  .layout{display:block;min-height:0}
-  #preview{padding:0;overflow:visible}
-  .preview{margin:0!important;box-shadow:none!important}
-}
+@media(max-width:850px){.layout{grid-template-columns:1fr}aside{max-height:none;border:0}.preview{margin-left:0}}
+@media print{@page{size:A4 portrait;margin:0}body{background:#fff}header,aside{display:none!important}.layout{display:block;min-height:0}#preview{padding:0;background:none;overflow:visible}.preview{margin:0!important;box-shadow:none!important}}
 </style>
 </head>
 <body>
-<header><a href="../">← XARK</a><b>Report</b><span>Free • Browser-only</span></header>
+<header><a class="brand" href="../"><i>x</i>XARK</a><b>Report Writer</b><span>Browser-only</span></header>
 <div class="layout">
 <aside>
 <h2>Report Details</h2>
